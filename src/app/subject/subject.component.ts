@@ -23,10 +23,8 @@ loading : boolean = false;
               private globalService : GlobalServiceService) { }
 
   ngOnInit() {
-  	this.getClassList();
   	this.getSubjectList();
     this.initSubjectForm();
-    this.getboardList();
   }
 
    initSubjectForm(){
@@ -41,36 +39,6 @@ loading : boolean = false;
     this.subjectForm.reset();
     this.updateButton =false;
     $('#myModal').modal('show');
-    this.getClassList();
-  }
-
-    getboardList(){
-    this.loading = true;
-    let url = this.globalService.basePath+"admin/getAllBoards";
-     this.globalService.GetRequest(url).subscribe(response=>{
-      if(response[0].status===200){
-        this.loading = false;
-        this.board = response[0].json.data;
-      }else{
-        this.loading = false;
-        this.globalService.showNotification(response[0].json.message,4);
-      }
-    });
-  }
-
-   getClassList(){
-  	this.loading = true;
-    let url = this.globalService.basePath+"admin/getAllClasses";
-  	 this.globalService.GetRequest(url).subscribe(response=>{
-      if(response[0].status===200){
-        this.loading = false;
-        this.classes = response[0].json.data;
-        debugger;
-      }else{
-        this.loading = false;
-        this.globalService.showNotification(response[0].json.message,4);
-      }
-    });
   }
 
 
@@ -105,7 +73,7 @@ loading : boolean = false;
   saveSubject(){
     $('#myModal').modal('hide');
     this.loading = true;
-    let url = this.globalService.basePath+"admin/addSubjectForClass";
+    let url = this.globalService.basePath+"user/getCountyList";
     this.subjectForm.value.uploadedBy = this.globalService.getUser().username;
      this.globalService.PostRequest(url,this.subjectForm.value).subscribe(response=>{
       if(response[0].status===200){
@@ -134,7 +102,4 @@ loading : boolean = false;
     });
   }
 
-  updateSubject(){
-
-  }
 }

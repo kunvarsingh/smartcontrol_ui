@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
         this._message.sendMessage(response[0].json.data);
         localStorage.setItem('user',JSON.stringify(response[0].json.data));
         localStorage.setItem('logout','yes');
-        this.router.navigateByUrl('/class');
+        this.router.navigateByUrl('/users');
         $('#myModal').modal('hide');
         // if(response[0].json.data.partytype==='Buyer') this.router.navigateByUrl('/buyer/rfq');
         // else this.router.navigateByUrl('/supplier/rfq');

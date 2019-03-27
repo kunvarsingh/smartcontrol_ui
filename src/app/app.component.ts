@@ -24,7 +24,7 @@ export class AppComponent {
     this._compiler.clearCache();
     // localStorage.clear();
     if(this.globalService.getUser().hasOwnProperty('UserName')){
-      this.router.navigateByUrl('/class');
+      this.router.navigateByUrl('/users');
     }else{
       console.log('user not login')
       this.router.navigateByUrl('/login');

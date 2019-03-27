@@ -73,6 +73,6 @@ subscription: Subscription;
   // }
 
   openCountry(){
-    this.router.navigateByUrl('/subject');
+    this.router.navigateByUrl('/country-capital');
   }
 }

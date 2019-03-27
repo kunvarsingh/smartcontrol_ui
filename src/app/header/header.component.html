@@ -8,7 +8,7 @@
   </div>
   <div class="col-sm-3" style="cursor:pointer;color: blue">
   
-  <a (click)="openCountry()">Country and their capital</a>&nbsp;&nbsp;
+  <a (click)="openCountry()" *ngIf="accountType=='Admin' || accountType=='Super Admin'">Country and their capital</a>&nbsp;&nbsp;
 
   <!-- 	<a (click)="openClasses()">Classes</a>&nbsp;&nbsp;
   	<a (click)="openSubject()">Subjects</a>&nbsp;&nbsp;
