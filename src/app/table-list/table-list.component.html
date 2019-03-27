@@ -1,0 +1,287 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-header card-header-danger">
+                      <h4 class="card-title ">App Keys Table</h4>
+                      <p class="card-category"> Here is a list of keys for land-calculation app</p>
+                  </div>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class=" text-primary">
+                                  <th>
+                                      ID
+                                  </th>
+                                  <th>
+                                      Name
+                                  </th>
+                                  <th>
+                                      Email
+                                  </th>
+                                   <th>
+                                      Mobile Number
+                                  </th>
+                                  <th>
+                                      App-Key
+                                  </th>
+                                  <th>
+                                      From Date
+                                  </th>
+                                  <th>
+                                      Exprired Date
+                                  </th>
+                                  <th>
+                                      Action
+                                  </th>
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let item of keysArray;let i=index">
+                                      <td>
+                                          {{i+1}}
+                                      </td>
+                                      <td>
+                                          {{item?.name}}
+                                      </td>
+                                      <td>
+                                          {{item?.email}}
+                                      </td>
+                                      <td>
+                                          {{item?.mobileNo}}
+                                      </td>
+                                      <td>
+                                          {{item?.appkey}}
+                                      </td>
+                                      <td class="text-primary">
+                                         {{item?.fromDate | date}}
+                                      </td>
+                                      <td class="text-primary">
+                                         {{item?.toDate | date}}
+                                      </td>
+                                      <td>
+                                         <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="viewKey(item,i)">View More...</button>
+                                      </td>
+                                  </tr>
+                                 
+                                 <tr *ngIf="keysArray.length===0">
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td>No Keys generated yet!.</td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                 </tr>
+
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+         <!--  <div class="col-md-12">
+              <div class="card card-plain">
+                  <div class="card-header card-header-danger">
+                      <h4 class="card-title mt-0"> Table on Plain Background</h4>
+                      <p class="card-category"> Here is a subtitle for this table</p>
+                  </div>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table class="table table-hover">
+                              <thead class="">
+                                  <th>
+                                      ID
+                                  </th>
+                                  <th>
+                                      Name
+                                  </th>
+                                  <th>
+                                      Country
+                                  </th>
+                                  <th>
+                                      City
+                                  </th>
+                                  <th>
+                                      Salary
+                                  </th>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td>
+                                          1
+                                      </td>
+                                      <td>
+                                          Dakota Rice
+                                      </td>
+                                      <td>
+                                          Niger
+                                      </td>
+                                      <td>
+                                          Oud-Turnhout
+                                      </td>
+                                      <td>
+                                          $36,738
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>
+                                          2
+                                      </td>
+                                      <td>
+                                          Minerva Hooper
+                                      </td>
+                                      <td>
+                                          Curaçao
+                                      </td>
+                                      <td>
+                                          Sinaai-Waas
+                                      </td>
+                                      <td>
+                                          $23,789
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>
+                                          3
+                                      </td>
+                                      <td>
+                                          Sage Rodriguez
+                                      </td>
+                                      <td>
+                                          Netherlands
+                                      </td>
+                                      <td>
+                                          Baileux
+                                      </td>
+                                      <td>
+                                          $56,142
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>
+                                          4
+                                      </td>
+                                      <td>
+                                          Philip Chaney
+                                      </td>
+                                      <td>
+                                          Korea, South
+                                      </td>
+                                      <td>
+                                          Overland Park
+                                      </td>
+                                      <td>
+                                          $38,735
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>
+                                          5
+                                      </td>
+                                      <td>
+                                          Doris Greene
+                                      </td>
+                                      <td>
+                                          Malawi
+                                      </td>
+                                      <td>
+                                          Feldkirchen in Kärnten
+                                      </td>
+                                      <td>
+                                          $63,542
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>
+                                          6
+                                      </td>
+                                      <td>
+                                          Mason Porter
+                                      </td>
+                                      <td>
+                                          Chile
+                                      </td>
+                                      <td>
+                                          Gloucester
+                                      </td>
+                                      <td>
+                                          $78,615
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div> -->
+      </div>
+  </div>
+</div>
+
+
+
+  <!-- notice modal -->
+<div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-notice mdbx-hd">
+      <div class="modal-content" style="width: 150%!important;">
+          <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">Your Key :</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
+              </div>
+          <div class="modal-body text-center">
+              <div class="row">
+                  
+                  <div class="col-md-5" style="border-right: 1px dotted #808080f7">
+                        <div class="col-md-12">
+                            <p>Name : </p>
+                            <p>Email : </p>
+                            <p>App Key : </p>
+                            <p>From Date :</p>
+                            <p>To Date : </p>
+                            <p>Free Trial : </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                       <div class="col-md-12">
+                            <p>{{data?.name}}</p>
+                            <p>{{data?.email}}</p>
+                            <p>{{data?.appkey}}</p>
+                            <p>{{data?.fromDate}}</p>
+                            <p>{{data?.toDate}}</p>
+                            <p>{{data?.isFreeTrial===true ? 'YES' : 'NO'}}</p>
+                        </div>
+                    </div>
+
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="subscription(data._id)" style="margin-left: 558px!important">1 Yr subscription</button>
+
+                     <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="deleteKey(data._id)" style="margin-left: 600px!important">Delete Key</button>
+
+                   <!-- <div class="col-md-12"> -->
+
+                      <!-- <form [formGroup]="viewForm">
+                          <div class="row">
+                             
+                              <div class="col-md-6">
+                                  <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Username" formControlName="name">
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-md-6">
+                                  <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Email address" type="email" formControlName="email">
+                                  </mat-form-field>
+                              </div>
+                           <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="generateKey()">Generate Key</button>
+                           <div class="clearfix"></div>
+                          </div>
+                      </form> -->
+                 <!-- </div> -->
+
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+                        <!-- end notice modal -->

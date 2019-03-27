@@ -1,0 +1,108 @@
+
+<div class="row">
+  <div class="col-sm-3"> <h4>My Subject List</h4></div>
+  <div class="col-sm-3"></div>
+  <div class="col-sm-3"></div>
+  <div class="col-sm-3">
+    <button type="button" class="btn btn-success" (click)="createSubject()" style="float: right">Create Subject</button>
+  </div>
+</div>
+<br>
+
+
+<div class="col-sm-12 listDetailsBox">
+<!--<hr>-->
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <!-- <th class="greyTd">#</th> -->
+      <th class="greyTd">Board</th>
+      <th class="greyTd">Subject Name</th>
+      <th class="greyTd">Class Name</th>
+      <th class="greyTd">Created By</th>
+      <th class="greyTd">Created At</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngIf="subjects?.length===0">
+      No subjects's listed Yet!.
+    </tr>
+
+    <tr *ngFor="let item of subjects; let i=index">
+      <!-- <td>{{i+1}}</td> -->
+      <td>{{item?.board?.boardName ? item?.board?.boardName : '--'}}</td>
+      <td>{{item.subjectName ? item.subjectName : '--'}}</td>
+      <td>{{item.class?.className ? item.class?.className : '--'}}</td>
+      <td>{{item.uploadedBy ? item.uploadedBy : '--'}}</td>
+      <td>{{item.CreatedAt ? item.CreatedAt : '--'}}</td> 
+      <td>
+       <img src="../../assets/images/delete.png" class="clsDelete" (click)="deleteSubject(item,i);">&nbsp;&nbsp;
+        <!-- <img src="../../assets/images/detail.png" class="clsDelete" (click)="editSubject(item,i);"> -->
+        <img src="../../assets/images/detail.png" class="clsDelete" (click)="viewData(item,i);" style="cursor:pointer;">
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+
+
+
+ <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 *ngIf="!updateButton">Add Subject</h4>
+        <h4 *ngIf="updateButton">Edit Subject</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- <button type="button" class="close" (click)="close()">&times;</button> -->
+      </div>
+
+  <form class="form-signin card" [formGroup]="subjectForm">
+
+    <div class="row">
+      <div class="col-sm-3">Board<span class="mandatory_labl">*</span></div>
+      <div class="col-sm-8"> <select formControlName="boardId" class="form-control mt-3">
+          <option value="" selected="selected">Select</option>
+          <option value="{{item1._id}}" *ngFor="let item1 of board;">{{item1.boardName}}</option>
+        </select>
+         <div class="small" *ngIf="!subjectForm.controls['boardId'].valid">
+          <span *ngIf="subjectForm.controls['boardId'].errors['required']" class="small redlabe text-danger">Board cannot be left blank</span>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="row">
+    <div class="col-sm-3">Class<span class="mandatory_labl">*</span></div>
+    <div class="col-sm-8"> <select formControlName="classId" class="form-control mt-3">
+        <option value="" selected="selected">Select</option>
+        <option value="{{item1._id}}" *ngFor="let item1 of classes;">{{item1.className}}</option>
+      </select>
+       <div class="small" *ngIf="!subjectForm.controls['classId'].valid">
+        <span *ngIf="subjectForm.controls['classId'].errors['required']" class="small redlabe text-danger">Class cannot be left blank</span>
+      </div>
+    </div>
+  </div>
+
+
+   <div class="row">
+    <div class="col-sm-3">Subject Name<span class="mandatory_labl">*</span></div>
+    <div class="col-sm-8">  <input type="text" class="form-control mt-3" required="" autofocus="" formControlName="subjectName"> </div>
+  </div>
+
+
+
+  <br>
+  
+   </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="saveSubject()" *ngIf="!updateButton">Save</button>
+          <button type="button" class="btn btn-primary" (click)="updateSubject()" *ngIf="updateButton">Update</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>

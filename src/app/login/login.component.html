@@ -1,0 +1,74 @@
+<!-- <p>
+  login works!
+</p> -->
+
+
+<div class="container">
+  <!-- Trigger the modal with a button -->
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <!-- <img src="../../assets/images/logo_TL.png" style="width:15%;float: left"> -->
+          <h3>Smart Controls</h3>
+          <!-- <button type="button" class="close" (click)="close()">&times;</button> -->
+          <!-- <h4 class="modal-title">Modal Header</h4> -->
+        </div>
+
+     <!--    <div class="modal-body">
+          <p>Some text in the modal.</p>
+          User Name :  <input type="text" name="username" placeholder="username"><br/>
+          Password : <input type="password" name="password" placeholder="password"><br/>
+          Part Type : <select>
+          	<option value="select">Select</option>
+          	<option value="Buyer">Buyer</option>
+          	<option value="Supplier">Supplier</option>
+          </select>
+        </div> -->
+        <div class="content"><h1 class="h3 mb-3 text-basic font-weight-bold">Login</h1></div>
+
+    <form class="form-signin" [formGroup]="loginForm" (submit)="login()" (keydown)="keyDownFunction($event)" style="margin-left: 25%">
+      <!--<img class="mb-4" src="../../assets/images/bg-01.jpg" alt="" width="72" height="72">-->
+      <!-- <img src="http://scon.blockbrew.co/img/logo.png" style="width:50%;"> -->
+
+      <!-- <h1 class="h3 mb-3 text-warning font-weight-bold">Login</h1> -->
+      <label for="inputEmail" class="sr-only">User Name</label>
+      <input type="text" id="inputEmail" class="form-control mt-3" placeholder="User Name" required="" autofocus="" formControlName="email">
+      <div class="small" *ngIf="!loginForm.controls['email'].valid&&loginForm.controls['email'].dirty" class="redlabe">
+        <span *ngIf="loginForm.controls['email'].errors['required']" class="small redlabe text-danger"> Email cannot be left blank</span>
+        <span *ngIf="loginForm.controls['email'].errors['pattern']" class="small redlabe text-danger">Email must be valid</span>
+      </div>
+
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="inputPassword" class="form-control mt-3" placeholder="Password" required="" formControlName="password">
+      <div class="small" *ngIf="!loginForm.controls['password'].valid&&loginForm.controls['password'].dirty" class="redlabe">
+        <span *ngIf="loginForm.controls['password'].errors['required']" class="small redlabe text-danger">Password cannot be left blank</span>
+        <span *ngIf="loginForm.controls['password'].errors['minlength']" class="small redlabe text-danger">password must be atleast 6 characters</span>
+        <span *ngIf="loginForm.controls['password'].errors['pattern']&&!loginForm.controls['password'].errors['minlength']" class="small redlabe text-danger">Password must contain at least 6 characters including 1 uppercase and 1 lowercase letter, 1 special character and 1 number</span>
+      </div>
+      <br>
+      <!-- <label for="partytype" class="sr-only">Party Type</label>
+      <select formControlName="partytype" class="form-control mt-3">
+      	<option value="select" selected="selected">Select</option>
+      	<option value="Buyer">Buyer</option>
+      	<option value="Supplier">Supplier</option>
+      </select>
+       <div class="small" *ngIf="!loginForm.controls['partytype'].valid&&loginForm.controls['partytype'].dirty">
+        <span *ngIf="loginForm.controls['partytype'].errors['required']" class="small redlabe text-danger">Party Type cannot be left blank</span>
+      </div> -->
+    </form>
+
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+          <button type="button" class="btn btn-primary" (click)="login()">Login</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
