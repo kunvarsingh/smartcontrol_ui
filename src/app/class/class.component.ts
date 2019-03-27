@@ -27,7 +27,6 @@ export class ClassComponent implements OnInit {
   ngOnInit() {
   	this.getallUsers();
     this.initClassForm();
-    this.getboardList();
   }
 
    initClassForm(){
@@ -43,20 +42,6 @@ export class ClassComponent implements OnInit {
     $('#myModal').modal('show');
   }
 
-
-  getboardList(){
-    this.loading = true;
-    let url = this.globalService.basePath+"admin/getAllBoards";
-     this.globalService.GetRequest(url).subscribe(response=>{
-      if(response[0].status===200){
-        this.loading = false;
-        this.board = response[0].json.data;
-      }else{
-        this.loading = false;
-        this.globalService.showNotification(response[0].json.message,4);
-      }
-    });
-  }
 
   getallUsers(){
   	this.loading = true;
@@ -87,12 +72,12 @@ export class ClassComponent implements OnInit {
      this.adminForm.controls['className'].setValue(item.className);
   }
 
-  viewClass(item,index){
+  viewUser(item,index){
     $('#myModal1').modal('show');
      this.loading = true;
-     this.className = item.className;
-    let url = this.globalService.basePath+"admin/getAllSubjectsForClass";
-     this.globalService.PostRequest(url,{classId : item._id}).subscribe(response=>{
+     this.className = item.UserName;
+    let url = this.globalService.basePath+"user/getuserById";
+     this.globalService.PostRequest(url,{userId : item._id}).subscribe(response=>{
       if(response[0].status===200){
         this.loading = false;
         this.classesSubjects = JSON.parse(response[0].json._body).data;
@@ -136,9 +121,4 @@ export class ClassComponent implements OnInit {
       }
     });
   }
-
-  updateClass(){
-
-  }
-
 }

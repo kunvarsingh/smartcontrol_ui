@@ -1,10 +1,11 @@
 
 <div class="row">
-  <div class="col-sm-3"> <h4>My Subject List</h4></div>
+  <div class="col-sm-3"> <h4>My Country and Capital List</h4></div>
   <div class="col-sm-3"></div>
   <div class="col-sm-3"></div>
   <div class="col-sm-3">
-    <button type="button" class="btn btn-success" (click)="createSubject()" style="float: right">Create Subject</button>
+    <button type="button" class="btn btn-success" (click)="createSubject()">Add Country</button>&nbsp; &nbsp;&nbsp;&nbsp;
+    <button type="button" class="btn btn-success" (click)="createSubject()" style="float: right">Add Capital</button>
   </div>
 </div>
 <br>
@@ -16,25 +17,19 @@
     <thead>
     <tr>
       <!-- <th class="greyTd">#</th> -->
-      <th class="greyTd">Board</th>
-      <th class="greyTd">Subject Name</th>
-      <th class="greyTd">Class Name</th>
-      <th class="greyTd">Created By</th>
-      <th class="greyTd">Created At</th>
+      <th class="greyTd">Country</th>
+      <th class="greyTd">Capital</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngIf="subjects?.length===0">
-      No subjects's listed Yet!.
+      No country/capital's listed Yet!.
     </tr>
 
     <tr *ngFor="let item of subjects; let i=index">
       <!-- <td>{{i+1}}</td> -->
       <td>{{item?.board?.boardName ? item?.board?.boardName : '--'}}</td>
       <td>{{item.subjectName ? item.subjectName : '--'}}</td>
-      <td>{{item.class?.className ? item.class?.className : '--'}}</td>
-      <td>{{item.uploadedBy ? item.uploadedBy : '--'}}</td>
-      <td>{{item.CreatedAt ? item.CreatedAt : '--'}}</td> 
       <td>
        <img src="../../assets/images/delete.png" class="clsDelete" (click)="deleteSubject(item,i);">&nbsp;&nbsp;
         <!-- <img src="../../assets/images/detail.png" class="clsDelete" (click)="editSubject(item,i);"> -->

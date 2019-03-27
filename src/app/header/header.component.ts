@@ -56,19 +56,23 @@ subscription: Subscription;
         this.subscription.unsubscribe();
     }
 
-  openClasses(){
-    this.router.navigateByUrl('/class');
-  }  
+  // openClasses(){
+  //   this.router.navigateByUrl('/class');
+  // }  
 
-  openSubject(){
+  // openSubject(){
+  //   this.router.navigateByUrl('/subject');
+  // }
+
+  // openBoards(){
+  //  this.router.navigateByUrl('/board'); 
+  // }
+
+  // openFormula(){
+  //  this.router.navigateByUrl('/formula');  
+  // }
+
+  openCountry(){
     this.router.navigateByUrl('/subject');
-  }
-
-  openBoards(){
-   this.router.navigateByUrl('/board'); 
-  }
-
-  openFormula(){
-   this.router.navigateByUrl('/formula');  
   }
 }
