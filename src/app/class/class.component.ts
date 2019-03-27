@@ -12,32 +12,33 @@ declare var $: any;
 })
 export class ClassComponent implements OnInit {
   loading : boolean = false;
-  classes : any[] = [];
+  users : any[] = [];
   updateButton : boolean = false;
-  classForm :FormGroup;
+  adminForm :FormGroup;
   classesSubjects : any[] = [];
   className : any;
   board : any[] = [];
+  roles : any[] = [];
 
   constructor(private http:Http,
               private router: Router,
               private globalService : GlobalServiceService) { }
 
   ngOnInit() {
-  	this.getClassList();
+  	this.getallUsers();
     this.initClassForm();
     this.getboardList();
   }
 
    initClassForm(){
-     this.classForm= new FormGroup({
-      className : new FormControl('', Validators.required),
-      boardId : new FormControl('', Validators.required),
+     this.adminForm= new FormGroup({
+      email : new FormControl('', Validators.required),
+      username : new FormControl('', Validators.required),
     });
   }
 
-  createClass(){
-    this.classForm.reset();
+  createAdmin(){
+    this.adminForm.reset();
     this.updateButton =false;
     $('#myModal').modal('show');
   }
@@ -57,14 +58,13 @@ export class ClassComponent implements OnInit {
     });
   }
 
-  getClassList(){
+  getallUsers(){
   	this.loading = true;
-    let url = this.globalService.basePath+"admin/getAllClasses";
+    let url = this.globalService.basePath+"user/getallUsers";
   	 this.globalService.GetRequest(url).subscribe(response=>{
       if(response[0].status===200){
         this.loading = false;
-        this.classes = response[0].json.data;
-        debugger;
+        this.users = response[0].json.data;
       }else{
         this.loading = false;
         this.globalService.showNotification(response[0].json.message,4);
@@ -72,10 +72,19 @@ export class ClassComponent implements OnInit {
     });
   }
 
+  addRole(role){
+    let status = this.roles.findIndex((item)=>{ return item===role});
+    if(status==-1){
+      this.roles.push(role);
+    }else{
+      this.roles.splice(status,1);
+    }
+  }
+
   editClass(item,index){
      this.updateButton =true;
     $('#myModal').modal('show');
-     this.classForm.controls['className'].setValue(item.className);
+     this.adminForm.controls['className'].setValue(item.className);
   }
 
   viewClass(item,index){
@@ -94,16 +103,18 @@ export class ClassComponent implements OnInit {
     });
   }
 
-  saveClass(){
+  saveUser(){
     $('#myModal').modal('hide');
     this.loading = true;
-    let url = this.globalService.basePath+"admin/addClass";
-    this.classForm.value.uploadedBy = this.globalService.getUser().username;
-     this.globalService.PostRequest(url,this.classForm.value).subscribe(response=>{
+    let url = this.globalService.basePath+"user/createAdmin";
+    this.adminForm.value.uploadedBy = this.globalService.getUser().UserName;
+    this.adminForm.value.roles = this.roles;
+     this.globalService.PostRequest(url,this.adminForm.value).subscribe(response=>{
       if(response[0].status===200){
         this.loading = false;
         this.globalService.showNotification(JSON.parse(response[0].json._body).message,2);
-        this.getClassList();
+        this.getallUsers();
+        this.roles = [];
       }else{
         this.loading = false;
         this.globalService.showNotification(response[0].json.message,4);
@@ -111,14 +122,14 @@ export class ClassComponent implements OnInit {
     });
   }
 
-  deleteClass(item,index){
+  deleteUser(item,index){
      this.loading = true;
-    let url = this.globalService.basePath+"admin/deleteClass";
-     this.globalService.PostRequest(url,{classId : item._id}).subscribe(response=>{
+    let url = this.globalService.basePath+"user/deleteUser";
+     this.globalService.PostRequest(url,{userId : item._id}).subscribe(response=>{
       if(response[0].status===200){
         this.loading = false;
         this.globalService.showNotification(JSON.parse(response[0].json._body).message,2);
-        this.getClassList();
+        this.getallUsers();
       }else{
         this.loading = false;
         this.globalService.showNotification(response[0].json.message,4);

@@ -23,6 +23,12 @@ export class AppComponent {
               private http:Http){
     this._compiler.clearCache();
     // localStorage.clear();
+    if(this.globalService.getUser().hasOwnProperty('UserName')){
+      this.router.navigateByUrl('/class');
+    }else{
+      console.log('user not login')
+      this.router.navigateByUrl('/login');
+    }
 
   }
 }

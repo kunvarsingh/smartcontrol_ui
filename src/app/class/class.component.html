@@ -1,10 +1,10 @@
 
 <div class="row">
-  <div class="col-sm-3"> <h4>My Class List</h4></div>
+  <div class="col-sm-3"> <h4>My users</h4></div>
   <div class="col-sm-3"></div>
   <div class="col-sm-3"></div>
   <div class="col-sm-3">
-    <button type="button" class="btn btn-success" (click)="createClass()" style="float: right">Create Class</button>
+    <button type="button" class="btn btn-success" (click)="createAdmin()" style="float: right">Create Admin</button>
   </div>
 </div>
 <br>
@@ -16,27 +16,26 @@
     <thead>
     <tr>
       <!-- <th class="greyTd">#</th> -->
-      <th class="greyTd">Class Name</th>
-      <th class="greyTd">Board</th>
-      <th class="greyTd">Created By</th>
+      <th class="greyTd">User Name</th>
+      <th class="greyTd">Email</th>
+      <th class="greyTd">Permissions</th>
       <th class="greyTd">Created At</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngIf="classes?.length===0">
+    <tr *ngIf="users?.length===0">
       No Classes's listed Yet!.
     </tr>
 
-    <tr *ngFor="let item of classes; let i=index">
+    <tr *ngFor="let item of users; let i=index">
       <!-- <td>{{i+1}}</td> -->
-      <td>{{item.className ? item.className : '--'}}</td>
-      <td>{{item?.board?.boardName ? item?.board?.boardName : '--'}}</td>
-      <td>{{item.uploadedBy ? item.uploadedBy : '--'}}</td>
+      <td>{{item.UserName ? item.UserName : '--'}}</td>
+      <td>{{item?.Email ? item?.Email : '--'}}</td>
+      <td>{{item.roles ? item.roles : '--'}}</td>
       <td>{{item.CreatedAt ? item.CreatedAt : '--'}}</td> 
       <td>
-       <img src="../../assets/images/delete.png" class="clsDelete" (click)="deleteClass(item,i);">&nbsp;&nbsp;
-        <!-- <img src="../../assets/images/detail.png" class="clsDelete" (click)="editClass(item,i);"> -->
-        <img src="../../assets/images/detail.png" class="clsDelete" (click)="viewClass(item,i);" style="cursor:pointer;">
+       <img src="../../assets/images/delete.png" class="clsDelete" (click)="deleteUser(item,i);">&nbsp;&nbsp;
+        <!-- <img src="../../assets/images/detail.png" class="clsDelete" (click)="viewClass(item,i);" style="cursor:pointer;"> -->
       </td>
     </tr>
     </tbody>
@@ -52,37 +51,53 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <h4 *ngIf="!updateButton">Add Class</h4>
-        <h4 *ngIf="updateButton">Edit Class</h4>
+        <h4>Add User</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <!-- <button type="button" class="close" (click)="close()">&times;</button> -->
       </div>
 
-  <form class="form-signin card" [formGroup]="classForm">
-
-      <div class="row">
-      <div class="col-sm-3">Board<span class="mandatory_labl">*</span></div>
-      <div class="col-sm-8"> <select formControlName="boardId" class="form-control mt-3">
-          <option value="" selected="selected">Select</option>
-          <option value="{{item1._id}}" *ngFor="let item1 of board;">{{item1.boardName}}</option>
-        </select>
-         <div class="small" *ngIf="!classForm.controls['boardId'].valid">
-          <span *ngIf="classForm.controls['boardId'].errors['required']" class="small redlabe text-danger">Board cannot be left blank</span>
-        </div>
-      </div>
-    </div>
+  <form class="form-signin card" [formGroup]="adminForm">
 
    <div class="row">
-    <div class="col-sm-3">Class Name<span class="mandatory_labl">*</span></div>
-    <div class="col-sm-8">  <input type="text" class="form-control mt-3" required="" autofocus="" formControlName="className"> </div>
+    <div class="col-sm-3">Admin Email<span class="mandatory_labl">*</span></div>
+    <div class="col-sm-8">  <input type="text" class="form-control mt-3" required="" autofocus="" formControlName="email"> </div>
   </div>
 
   <br>
   
+   <div class="row">
+    <div class="col-sm-3">Admin User Name<span class="mandatory_labl">*</span></div>
+    <div class="col-sm-8">  <input type="text" class="form-control mt-3" required="" autofocus="" formControlName="username"> </div>
+  </div>
+
+   <br>
+
+   <div class="row">
+    <div class="col-sm-3">
+     Add Country <input type="checkbox" name="Add Country" (change)="addRole('Add Country')">
+   </div>
+   <div class="col-sm-3">
+     Edit Country <input type="checkbox" name="Edit Country" (change)="addRole('Edit Country')">
+   </div>
+   <div class="col-sm-3">
+     Delete Country <input type="checkbox" name="Delete Country" (change)="addRole('Delete Country')">
+   </div>
+   <div class="col-sm-3">
+     Add Capital <input type="checkbox" name="Add Capital" (change)="addRole('Add Capital')">
+   </div>
+   <div class="col-sm-3">
+     Edit Capital <input type="checkbox" name="Edit Capital" (change)="addRole('Edit Capital')">
+   </div>
+   <div class="col-sm-3">
+     Delete Capital <input type="checkbox" name="Delete Capital" (change)="addRole('Delete Capital')">
+   </div>
+   </div>
+
+   <p style="color: red;">&nbsp;&nbsp;Note* : Default password is : admin@123 for above email.</p>
+   <br>
    </form>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="saveClass()" *ngIf="!updateButton">Save</button>
-          <button type="button" class="btn btn-primary" (click)="updateClass()" *ngIf="updateButton">Update</button>
+          <button type="button" class="btn btn-primary" (click)="saveUser()">Save</button>
         </div>
       </div>
       
