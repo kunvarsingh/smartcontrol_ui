@@ -12,43 +12,75 @@ declare var $: any;
 })
 export class SubjectComponent implements OnInit {
 loading : boolean = false;
-  subjects : any[] = [];
+  countries : any[] = [];
   updateButton : boolean = false;
-  subjectForm :FormGroup;
+  countryForm :FormGroup;
+  capitalForm :FormGroup;
    classes : any[] = [];
   board : any[] = [];
+  userDetails :any;
   
   constructor(private http:Http,
               private router: Router,
               private globalService : GlobalServiceService) { }
 
   ngOnInit() {
-  	this.getSubjectList();
+    this.viewUser();
+  	this.getCountryList();
     this.initSubjectForm();
+
   }
 
    initSubjectForm(){
-     this.subjectForm= new FormGroup({
-      subjectName : new FormControl('', Validators.required),
-      classId : new FormControl('', Validators.required),
-      boardId: new FormControl('', Validators.required),
+     this.countryForm= new FormGroup({
+      countryName : new FormControl('', Validators.required),
+      capitalName : new FormControl('', Validators.required),
+      // classId : new FormControl('', Validators.required),
+      // boardId: new FormControl('', Validators.required),
     });
+
+      this.capitalForm= new FormGroup({
+      countryName : new FormControl('', Validators.required),
+      capitalName : new FormControl('', Validators.required),
+      // classId : new FormControl('', Validators.required),
+      // boardId: new FormControl('', Validators.required),
+    });
+
   }
 
-  createSubject(){
-    this.subjectForm.reset();
+  addCountry(){
+    this.countryForm.reset();
     this.updateButton =false;
     $('#myModal').modal('show');
   }
 
+  addCapital(){
+    this.capitalForm.reset();
+    this.updateButton =false;
+    $('#myModal1').modal('show'); 
+  }
 
-  getSubjectList(){
+  getCountryList(){
   	this.loading = true;
-    let url = this.globalService.basePath+"admin/getAllSubjects";
-  	 this.globalService.GetRequest(url).subscribe(response=>{
+    let url = this.globalService.basePath+"user/getCountyList";
+  	 this.globalService.PostRequest(url,{userId : this.globalService.getUser()._id}).subscribe(response=>{
       if(response[0].status===200){
         this.loading = false;
-        this.subjects = response[0].json.data;
+        this.countries = JSON.parse(response[0].json._body).data;
+      }else{
+        this.loading = false;
+        this.globalService.showNotification(response[0].json.message,4);
+      }
+    });
+  }
+
+  viewUser(){
+     this.loading = true;
+    let url = this.globalService.basePath+"user/getuserById";
+     this.globalService.PostRequest(url,{userId : this.globalService.getUser()._id}).subscribe(response=>{
+      if(response[0].status===200){
+        this.loading = false;
+        this.userDetails = JSON.parse(response[0].json._body).data;
         debugger;
       }else{
         this.loading = false;
@@ -57,29 +89,24 @@ loading : boolean = false;
     });
   }
 
-  editSubject(item,index){
-     this.updateButton =true;
-    $('#myModal').modal('show');
-     this.subjectForm.controls['subjectName'].setValue(item.className);
-  }
+  // viewData(item,index){
+  //    // this.updateButton =true;
+  //   // $('#myModal').modal('show');
+  //   debugger
+  //   this.router.navigateByUrl('/data?id='+item._id+'&classId='+item.class._id)
+  // }
 
-  viewData(item,index){
-     // this.updateButton =true;
-    // $('#myModal').modal('show');
-    debugger
-    this.router.navigateByUrl('/data?id='+item._id+'&classId='+item.class._id)
-  }
-
-  saveSubject(){
+  saveCountry(){
     $('#myModal').modal('hide');
     this.loading = true;
-    let url = this.globalService.basePath+"user/getCountyList";
-    this.subjectForm.value.uploadedBy = this.globalService.getUser().username;
-     this.globalService.PostRequest(url,this.subjectForm.value).subscribe(response=>{
+    let url = this.globalService.basePath+"user/addCountryBySuperAdmin";
+    this.countryForm.value.addedBy = this.globalService.getUser().UserName;
+    this.countryForm.value.userId = this.globalService.getUser()._id;
+     this.globalService.PostRequest(url,this.countryForm.value).subscribe(response=>{
       if(response[0].status===200){
         this.loading = false;
         this.globalService.showNotification(JSON.parse(response[0].json._body).message,2);
-        this.getSubjectList();
+        this.getCountryList();
       }else{
         this.loading = false;
         this.globalService.showNotification(response[0].json.message,4);
@@ -87,14 +114,36 @@ loading : boolean = false;
     });
   }
 
-  deleteSubject(item,index){
-     this.loading = true;
-    let url = this.globalService.basePath+"admin/deleteSubjectForClass";
-     this.globalService.PostRequest(url,{subjectId : item._id}).subscribe(response=>{
+    back(){
+    this.router.navigateByUrl('/users');
+  }
+  saveCapital(){
+     $('#myModal1').modal('hide');
+    this.loading = true;
+    let url = this.globalService.basePath+"user/updateCapital";
+    this.capitalForm.value.addedBy = this.globalService.getUser().UserName;
+    this.capitalForm.value.userId = this.globalService.getUser()._id;
+    this.capitalForm.value.countryId = this.capitalForm.value.countryName;
+     this.globalService.PostRequest(url,this.capitalForm.value).subscribe(response=>{
       if(response[0].status===200){
         this.loading = false;
         this.globalService.showNotification(JSON.parse(response[0].json._body).message,2);
-        this.getSubjectList();
+        this.getCountryList();
+      }else{
+        this.loading = false;
+        this.globalService.showNotification(response[0].json.message,4);
+      }
+    });
+  }
+
+  deletCountry(item,index){
+     this.loading = true;
+    let url = this.globalService.basePath+"user/deleteCountry";
+     this.globalService.PostRequest(url,{countryId : item._id}).subscribe(response=>{
+      if(response[0].status===200){
+        this.loading = false;
+        this.globalService.showNotification(JSON.parse(response[0].json._body).message,2);
+        this.getCountryList();
       }else{
         this.loading = false;
         this.globalService.showNotification(response[0].json.message,4);

@@ -46,10 +46,11 @@ export class ClassComponent implements OnInit {
   getallUsers(){
   	this.loading = true;
     let url = this.globalService.basePath+"user/getallUsers";
-  	 this.globalService.GetRequest(url).subscribe(response=>{
+  	 this.globalService.PostRequest(url,{userId: this.globalService.getUser()._id}).subscribe(response=>{
       if(response[0].status===200){
         this.loading = false;
-        this.users = response[0].json.data;
+        this.users =JSON.parse(response[0].json._body).data;;
+        
       }else{
         this.loading = false;
         this.globalService.showNotification(response[0].json.message,4);
@@ -88,11 +89,15 @@ export class ClassComponent implements OnInit {
     });
   }
 
+
+
   saveUser(){
     $('#myModal').modal('hide');
     this.loading = true;
     let url = this.globalService.basePath+"user/createAdmin";
     this.adminForm.value.uploadedBy = this.globalService.getUser().UserName;
+    this.adminForm.value.accountType = this.globalService.getUser().accountType=='Super Admin' ? 'Admin' : 'Others';
+    
     this.adminForm.value.roles = this.roles;
      this.globalService.PostRequest(url,this.adminForm.value).subscribe(response=>{
       if(response[0].status===200){

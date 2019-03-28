@@ -4,8 +4,8 @@
   <div class="col-sm-3"></div>
   <div class="col-sm-3"></div>
   <div class="col-sm-3">
-    <button type="button" class="btn btn-success" (click)="createSubject()">Add Country</button>&nbsp; &nbsp;&nbsp;&nbsp;
-    <button type="button" class="btn btn-success" (click)="createSubject()" style="float: right">Add Capital</button>
+    <button type="button" class="btn btn-success" (click)="addCountry()" *ngIf="userDetails[0]?.roles.includes('Add Country') || userDetails[0]?.roles.includes('All')">Add Country</button>&nbsp; &nbsp;&nbsp;&nbsp;
+    <button type="button" class="btn btn-success" (click)="addCapital()" style="float: right" *ngIf="userDetails[0]?.roles.includes('Add Capital') || userDetails[0]?.roles.includes('All')">Add Capital</button>
   </div>
 </div>
 <br>
@@ -13,27 +13,30 @@
 
 <div class="col-sm-12 listDetailsBox">
 <!--<hr>-->
+<button type="button" class="btn btn-success" (click)="back()" style="float: right">Back</button>&nbsp;&nbsp;
+<p style="float: right;">Total : {{countries?.length}}</p>
   <table class="table table-hover">
     <thead>
     <tr>
       <!-- <th class="greyTd">#</th> -->
       <th class="greyTd">Country</th>
       <th class="greyTd">Capital</th>
+      <th class="greyTd">Actions</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngIf="subjects?.length===0">
+    <tr *ngIf="countries?.length===0">
       No country/capital's listed Yet!.
     </tr>
 
-    <tr *ngFor="let item of subjects; let i=index">
+    <tr *ngFor="let item of countries; let i=index">
       <!-- <td>{{i+1}}</td> -->
-      <td>{{item?.board?.boardName ? item?.board?.boardName : '--'}}</td>
-      <td>{{item.subjectName ? item.subjectName : '--'}}</td>
+      <td>{{item?.country ? item?.country : '--'}}</td>
+      <td>{{item?.capital ? item?.capital : '--'}}</td>
       <td>
-       <img src="../../assets/images/delete.png" class="clsDelete" (click)="deleteSubject(item,i);">&nbsp;&nbsp;
+       <img src="../../assets/images/delete.png" class="clsDelete" (click)="deletCountry(item,i);" *ngIf="userDetails[0]?.roles.includes('Delete Country') || userDetails[0]?.roles.includes('All')">&nbsp;&nbsp;
         <!-- <img src="../../assets/images/detail.png" class="clsDelete" (click)="editSubject(item,i);"> -->
-        <img src="../../assets/images/detail.png" class="clsDelete" (click)="viewData(item,i);" style="cursor:pointer;">
+        <!-- <img src="../../assets/images/detail.png" class="clsDelete" (click)="viewData(item,i);" style="cursor:pointer;"> -->
       </td>
     </tr>
     </tbody>
@@ -55,9 +58,9 @@
         <!-- <button type="button" class="close" (click)="close()">&times;</button> -->
       </div>
 
-  <form class="form-signin card" [formGroup]="subjectForm">
+  <form class="form-signin card" [formGroup]="countryForm">
 
-    <div class="row">
+<!--     <div class="row">
       <div class="col-sm-3">Board<span class="mandatory_labl">*</span></div>
       <div class="col-sm-8"> <select formControlName="boardId" class="form-control mt-3">
           <option value="" selected="selected">Select</option>
@@ -80,22 +83,74 @@
         <span *ngIf="subjectForm.controls['classId'].errors['required']" class="small redlabe text-danger">Class cannot be left blank</span>
       </div>
     </div>
-  </div>
+  </div> -->
 
 
    <div class="row">
-    <div class="col-sm-3">Subject Name<span class="mandatory_labl">*</span></div>
-    <div class="col-sm-8">  <input type="text" class="form-control mt-3" required="" autofocus="" formControlName="subjectName"> </div>
+    <div class="col-sm-4">Country Name<span class="mandatory_labl">*</span></div>
+    <div class="col-sm-8">  <input type="text" class="form-control mt-3" required="" autofocus="" formControlName="countryName"> </div>
+    <div class="small" *ngIf="!countryForm.controls['countryName'].valid&&countryForm.controls['countryName'].dirty" class="redlabe">
+        <span *ngIf="countryForm.controls['countryName'].errors['required']" class="small redlabe text-danger" style="float: righ;">countryName cannot be left blank</span>
+      </div>
+  </div>
+ <div class="row">
+    <div class="col-sm-4">Capital Name<span class="mandatory_labl">*</span></div>
+    <div class="col-sm-8">  <input type="text" class="form-control mt-3" required="" autofocus="" formControlName="capitalName"> </div>
+    <div class="small" *ngIf="!countryForm.controls['capitalName'].valid&&countryForm.controls['capitalName'].dirty" class="redlabe">
+        <span *ngIf="countryForm.controls['capitalName'].errors['required']" class="small redlabe text-danger">capitalName cannot be left blank</span>
+      </div>
+  </div>
+  <br>
+ </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="saveCountry()" *ngIf="!updateButton">Save</button>
+        </div>
+      </div>
+      
+    </div>
   </div>
 
 
 
+
+
+
+ <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 *ngIf="!updateButton">Add Subject</h4>
+        <h4 *ngIf="updateButton">Edit Subject</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- <button type="button" class="close" (click)="close()">&times;</button> -->
+      </div>
+
+  <form class="form-signin card" [formGroup]="capitalForm">
+
+    <div class="row">
+      <div class="col-sm-3">Country name<span class="mandatory_labl">*</span></div>
+      <div class="col-sm-8"> <select formControlName="countryName" class="form-control mt-3">
+          <option value="" selected="selected">Select</option>
+          <option value="{{item1._id}}" *ngFor="let item1 of countries;">{{item1.country}}</option>
+        </select>
+         <div class="small" *ngIf="!capitalForm.controls['countryName'].valid">
+          <span *ngIf="capitalForm.controls['countryName'].errors['required']" class="small redlabe text-danger">country Name cannot be left blank</span>
+        </div>
+      </div>
+    </div>
+
+ <div class="row">
+    <div class="col-sm-4">Capital Name<span class="mandatory_labl">*</span></div>
+    <div class="col-sm-8">  <input type="text" class="form-control mt-3" required="" autofocus="" formControlName="capitalName"> </div>
+    <div class="small" *ngIf="!capitalForm.controls['capitalName'].valid&&capitalForm.controls['capitalName'].dirty" class="redlabe">
+        <span *ngIf="capitalForm.controls['capitalName'].errors['required']" class="small redlabe text-danger">capitalName cannot be left blank</span>
+      </div>
+  </div>
   <br>
-  
-   </form>
+ </form>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="saveSubject()" *ngIf="!updateButton">Save</button>
-          <button type="button" class="btn btn-primary" (click)="updateSubject()" *ngIf="updateButton">Update</button>
+          <button type="button" class="btn btn-primary" (click)="saveCapital()" *ngIf="!updateButton">Save</button>
         </div>
       </div>
       

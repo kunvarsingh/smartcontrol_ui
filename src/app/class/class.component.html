@@ -4,7 +4,9 @@
   <div class="col-sm-3"></div>
   <div class="col-sm-3"></div>
   <div class="col-sm-3">
-    <button type="button" class="btn btn-success" (click)="createAdmin()" style="float: right">Create Admin</button>
+    <button type="button" class="btn btn-success" (click)="createAdmin()" style="float: right" *ngIf="this.globalService.getUser().accountType=='Super Admin'">Create Admin</button>
+    <button type="button" class="btn btn-success" (click)="createAdmin()" style="float: right" *ngIf="this.globalService.getUser().accountType=='Admin'">Create User</button>
+
   </div>
 </div>
 <br>
@@ -12,6 +14,8 @@
 
 <div class="col-sm-12 listDetailsBox">
 <!--<hr>-->
+
+<p style="float: right;">Total : {{users?.length}}</p>
   <table class="table table-hover">
     <thead>
     <tr>
@@ -20,6 +24,7 @@
       <th class="greyTd">Email</th>
       <th class="greyTd">Permissions</th>
       <th class="greyTd">Created At</th>
+      <th class="greyTd">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -51,7 +56,8 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <h4>Add User</h4>
+        <h4 *ngIf="this.globalService.getUser().accountType=='Super Admin'">Add Admin</h4>
+        <h4 *ngIf="this.globalService.getUser().accountType=='Admin'">Add User</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <!-- <button type="button" class="close" (click)="close()">&times;</button> -->
       </div>
